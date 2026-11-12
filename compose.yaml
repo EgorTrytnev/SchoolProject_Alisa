@@ -5,6 +5,8 @@ services:
     ports:
       - "7860:7860"
     environment:
-      TOKENHARBOR_API_KEY: ${TOKENHARBOR_API_KEY:?Set TOKENHARBOR_API_KEY in .env}
+      YANDEX_API_KEY: ${YANDEX_API_KEY:?Set YANDEX_API_KEY in .env}
+      YANDEX_FOLDER_ID: ${YANDEX_FOLDER_ID:?Set YANDEX_FOLDER_ID in .env}
+      YANDEX_MODEL: ${YANDEX_MODEL:-deepseek-v4.1-flash}
       GRADIO_SERVER_NAME: 0.0.0.0
       GRADIO_SERVER_PORT: "7860"

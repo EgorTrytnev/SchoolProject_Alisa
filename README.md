@@ -1,6 +1,6 @@
 # Чат-бот Алиса
 
-Учебный чат-бот с веб-интерфейсом Gradio. Приложение принимает сообщения, позволяет выбрать язык ответа и отправляет текущий запрос вместе с историей диалога модели через TokenHarbor API.
+Учебный чат-бот с веб-интерфейсом Gradio. Приложение принимает сообщения, позволяет выбрать язык ответа и отправляет текущий запрос вместе с историей диалога модели через Yandex AI Studio Responses API.
 
 ## Запуск локально
 
@@ -12,18 +12,20 @@
    python -m pip install -r requirements.txt
    ```
 
-2. Задайте API-ключ TokenHarbor в переменной окружения `TOKENHARBOR_API_KEY`.
+2. Задайте API-ключ Yandex Cloud в переменной окружения `YANDEX_API_KEY` и идентификатор каталога в `YANDEX_FOLDER_ID`.
 
    macOS / Linux:
 
    ```bash
-   export TOKENHARBOR_API_KEY="ваш_ключ"
+   export YANDEX_API_KEY="ваш_ключ"
+   export YANDEX_FOLDER_ID="идентификатор_каталога"
    ```
 
    Windows PowerShell:
 
    ```powershell
-   $env:TOKENHARBOR_API_KEY = "ваш_ключ"
+   $env:YANDEX_API_KEY = "ваш_ключ"
+   $env:YANDEX_FOLDER_ID = "идентификатор_каталога"
    ```
 
 3. Запустите приложение:
@@ -47,10 +49,12 @@
    nano .env
    ```
 
-   Запишите в него действующий ключ TokenHarbor:
+   Запишите в него действующий ключ Yandex Cloud:
 
    ```dotenv
-   TOKENHARBOR_API_KEY=ваш_новый_ключ
+   YANDEX_API_KEY=ваш_новый_ключ
+   YANDEX_FOLDER_ID=идентификатор_каталога
+   YANDEX_MODEL=deepseek-v4.1-flash
    ```
 
 2. Соберите образ и запустите контейнер:
@@ -75,17 +79,19 @@
 
 - `src/main.py` — точка входа; читает адрес и порт из `GRADIO_SERVER_NAME` и `GRADIO_SERVER_PORT`.
 - `src/interface.py` — создаёт интерфейс Gradio с чатом и выбором языка.
-- `src/chat_service.py` — читает `TOKENHARBOR_API_KEY`, формирует сообщения с учётом истории и вызывает TokenHarbor API.
+- `src/chat_service.py` — читает `YANDEX_API_KEY`, формирует сообщения с учётом истории и вызывает Yandex AI Studio Responses API.
 - `Dockerfile` — описывает образ приложения.
 - `compose.yaml` — задаёт запуск контейнера и публикацию порта 7860.
 
-Схема работы: **пользователь → Gradio (`interface.py`) → обработчик (`chat_service.py`) → TokenHarbor → ответ пользователю**.
+Схема работы: **пользователь → Gradio (`interface.py`) → обработчик (`chat_service.py`) → Yandex Cloud → ответ пользователю**.
 
 ## Параметры
 
 | Переменная | Назначение | Значение по умолчанию |
 | --- | --- | --- |
-| `TOKENHARBOR_API_KEY` | Ключ доступа к TokenHarbor; обязателен | Нет |
+| `YANDEX_API_KEY` | Ключ доступа к Yandex Cloud; обязателен | Нет |
+| `YANDEX_FOLDER_ID` | Идентификатор каталога Yandex Cloud; обязателен | Нет |
+| `YANDEX_MODEL` | Название модели | `deepseek-v4.1-flash` |
 | `GRADIO_SERVER_NAME` | Адрес интерфейса внутри процесса | `127.0.0.1` |
 | `GRADIO_SERVER_PORT` | Порт интерфейса | `7860` |
 
