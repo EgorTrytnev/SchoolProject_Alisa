@@ -2,8 +2,6 @@ import logging
 import os
 
 import requests
-from dotenv import load_dotenv
-
 
 
 API_URL = "https://ai.api.cloud.yandex.net/v1/responses"
@@ -12,7 +10,6 @@ SYSTEM_PROMPT = "Ты — искусственный интеллект, кот�
 
 
 def get_settings():
-    load_dotenv()
     api_key = os.getenv("YANDEX_API_KEY")
     folder_id = os.getenv("YANDEX_FOLDER_ID")
 
