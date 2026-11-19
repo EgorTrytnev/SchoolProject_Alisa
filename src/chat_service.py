@@ -2,15 +2,17 @@ import logging
 import os
 
 import requests
+from dotenv import load_dotenv
+
 
 
 API_URL = "https://ai.api.cloud.yandex.net/v1/responses"
 MODEL = os.getenv("YANDEX_MODEL", "deepseek-v4.1-flash")
 SYSTEM_PROMPT = "Ты — искусственный интеллект, который помогает людям. Пиши ответы обычным текстом, без форматирования и разметки. Не используй HTML, Markdown, LaTeX или другие форматы. Не добавляй эмодзи в ответы."
-logger = logging.getLogger(__name__)
 
 
 def get_settings():
+    load_dotenv()
     api_key = os.getenv("YANDEX_API_KEY")
     folder_id = os.getenv("YANDEX_FOLDER_ID")
 
@@ -23,7 +25,6 @@ def get_settings():
 
 
 def _text_content(content):
-    """Преобразует строку или список текстовых блоков Gradio в обычный текст."""
     if isinstance(content, str):
         return content
 
@@ -85,5 +86,4 @@ def get_answer(message, history, language):
 
         raise RuntimeError("Yandex API вернул ответ без текста.")
     except Exception:
-        logger.exception("Не удалось получить ответ от Yandex Cloud")
         return "Не удалось получить ответ. Проверьте подключение и настройки сервера."
